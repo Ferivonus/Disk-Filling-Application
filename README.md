@@ -17,7 +17,7 @@ To run this program, you need to have the following:
 2. Compile the code using a C compiler. For example, using GCC:
 
 ```shell
-   gcc -o diskfiller.exe diskfiller.c
+   gcc -o Disk-Filling-Application.exe Disk-Filling-Application.c
 ```
 
 3. Run the compiled executable:
